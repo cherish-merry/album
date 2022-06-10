@@ -165,11 +165,8 @@ def compress_photo():
 
 
 def handle_photo():
-    '''根据图片的文件名处理成需要的json格式的数据
-    
-    -----------
-    最后将data.json文件存到博客的source/photos文件夹下
-    '''
+    ''' 根据图片的文件名处理成需要的json格式的数据最后将data.json文件存到博客的source/photos文件夹下'''
+
     src_dir, des_dir = "photos/", "min_photos/"
     file_list = list_img_file(src_dir)
     list_info = []
