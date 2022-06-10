@@ -2,8 +2,12 @@
 from PIL import Image
 import shutil
 import os
+import sys
 import json
 from datetime import datetime
+
+
+# from ImageProcess import Graphics
 
 class Graphics:
     '''图片处理类
@@ -103,14 +107,12 @@ def directory_exists(directory):
 def list_img_file(directory):
     """列出目录下所有文件，并筛选出图片文件列表返回"""
     old_list = os.listdir(directory)
-    # print old_list
     new_list = []
     for filename in old_list:
         if not filename.startswith("._"):
             name, fileformat = filename.split(".")
             if fileformat.lower() == "jpg" or fileformat.lower() == "png" or fileformat.lower() == "gif":
                 new_list.append(filename)
-    # print new_list
     return new_list
 
 
@@ -210,32 +212,23 @@ def handle_photo():
             list_info[-1]['arr']['type'].append('image')
     list_info.reverse()  # 翻转
     final_dict = {"list": list_info}
-    with open("/Volumes/MAC-WIN/blog/source/album/data.json", "w") as fp:
+    with open("E:/malizhiBlog/blog/themes/next/source/lib/album/data.json", "w") as fp:
         json.dump(final_dict, fp)
 
 
 def cut_photo():
     """裁剪算法
-    
     ----------
     调用Graphics类中的裁剪算法，将src_dir目录下的文件进行裁剪（裁剪成正方形）
     """
     src_dir = "photos/"
     if directory_exists(src_dir):
-        if not directory_exists(src_dir):
-            make_directory(src_dir)
-        # business logic
         file_list = list_img_file(src_dir)
-        # print file_list
         if file_list:
             print_help()
             for infile in file_list:
-                img = Image.open(src_dir + infile)
+                Image.open(src_dir + infile)
                 Graphics(infile=src_dir + infile, outfile=src_dir + infile).cut_by_ratio()
-        else:
-            pass
-    else:
-        print("source directory not exist!")
 
 
 def git_operation():
