@@ -61,11 +61,14 @@ class Graphics:
         crop_img = im.crop(region)
         w, h = crop_img.size
         crop_img.thumbnail((int(w / SIZE_more_small_small), int(h / SIZE_more_small_small)))
+        path = self.outfile[:self.outfile.rindex('/')]
+        if not os.path.exists(path):
+            os.makedirs(path)
         crop_img.save(self.outfile)
 
 
-SRC_DIR = "./photos/"
-DES_DIR = "./min_photos/"
+SRC_DIR = "photos"
+DES_DIR = "min_photos"
 SIZE_normal = 1.0
 SIZE_small = 1.5
 SIZE_more_small = 2.0
@@ -73,14 +76,13 @@ SIZE_more_small_small = 3.0
 
 
 def list_img_file(directory):
-    """列出目录下所有文件，并筛选出图片文件列表返回"""
-    old_list = os.listdir(directory)
-    new_list = []
-    for filename in old_list:
-        name, formant = filename.split(".")
-        if formant.lower() == "jpg" or formant.lower() == "png" or formant.lower() == "gif":
-            new_list.append(filename)
-    return new_list
+    res = []
+    for root, ds, fs in os.walk(directory):
+        for f in fs:
+            _, form = f.split(".")
+            if form.lower() == "jpg" or form.lower() == "png" or form.lower() == "gif":
+                res.append(os.path.join(root, f))
+    return res
 
 
 def handle_photo():
@@ -124,9 +126,15 @@ def handle_photo():
 def cut_compress():
     src_file_list = list_img_file(SRC_DIR)
     des_file_list = list_img_file(DES_DIR)
+    des_file_name = []
+    for i in range(len(des_file_list)):
+        path = des_file_list[i]
+        des_file_name.append(path[path.index('/'):])
+
     for i in range(len(src_file_list)):
-        if src_file_list[i] not in des_file_list:
-            Graphics(infile=SRC_DIR + src_file_list[i], outfile=DES_DIR + src_file_list[i]).cut_compress()
+        path = src_file_list[i]
+        if path[path.index('/'):] not in des_file_name:
+            Graphics(infile=path, outfile=DES_DIR + path[path.index('/'):]).cut_compress()
 
 
 def git_operation():
