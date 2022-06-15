@@ -94,7 +94,7 @@ def handle_photo():
         git_dict['photos'].append(github_img_path + src_file_list[i])
     for i in range(len(des_file_list)):
         git_dict['min_photos'].append(github_img_path + des_file_list[i])
-    with open("/Volumes/MAC-WIN/album/data.json", "w") as fp:
+    with open("data.json", "w") as fp:
         json.dump(git_dict, fp)
 
 
