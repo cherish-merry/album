@@ -86,41 +86,16 @@ def list_img_file(directory):
 
 
 def handle_photo():
-    file_list = list_img_file(SRC_DIR)
-    list_info = []
-    for i in range(len(file_list)):
-        filename = file_list[i]
-        date_str, *info = filename.split("_")
-        info = '_'.join(info)
-        info, _ = info.split(".")
-        date = datetime.strptime(date_str, "%Y-%m-%d")
-        year_month = date_str[0:7]
-        if i == 0:  # 处理第一个文件
-            new_dict = {"date": year_month, "arr": {'year': date.year,
-                                                    'month': date.month,
-                                                    'link': [filename],
-                                                    'text': [info],
-                                                    'type': ['image']
-                                                    }
-                        }
-            list_info.append(new_dict)
-        elif year_month != list_info[-1]['date']:  # 不是最后的一个日期，就新建一个dict
-            new_dict = {"date": year_month, "arr": {'year': date.year,
-                                                    'month': date.month,
-                                                    'link': [filename],
-                                                    'text': [info],
-                                                    'type': ['image']
-                                                    }
-                        }
-            list_info.append(new_dict)
-        else:  # 同一个日期
-            list_info[-1]['arr']['link'].append(filename)
-            list_info[-1]['arr']['text'].append(info)
-            list_info[-1]['arr']['type'].append('image')
-    list_info.reverse()  # 翻转
-    final_dict = {"list": list_info}
+    github_img_path = "https://raw.githubusercontent.com/cherish-merry/album/master/photos/"
+    src_file_list = list_img_file(SRC_DIR)
+    des_file_list = list_img_file(DES_DIR)
+    git_dict = {"photos": [], "min_photos": []}
+    for i in range(len(src_file_list)):
+        git_dict['photos'].append(github_img_path + src_file_list[i])
+    for i in range(len(des_file_list)):
+        git_dict['min_photos'].append(github_img_path + des_file_list[i])
     with open("/Volumes/MAC-WIN/album/data.json", "w") as fp:
-        json.dump(final_dict, fp)
+        json.dump(git_dict, fp)
 
 
 def cut_compress():
