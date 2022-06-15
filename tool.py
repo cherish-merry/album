@@ -86,7 +86,7 @@ def list_img_file(directory):
 
 
 def handle_photo():
-    github_img_path = "https://raw.githubusercontent.com/cherish-merry/album/master/photos/"
+    github_img_path = "https://raw.githubusercontent.com/cherish-merry/album/master/"
     src_file_list = list_img_file(SRC_DIR)
     des_file_list = list_img_file(DES_DIR)
     git_dict = {"photos": [], "min_photos": []}
